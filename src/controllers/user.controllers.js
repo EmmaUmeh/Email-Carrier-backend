@@ -3,10 +3,16 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
 require('dotenv').config();
 
+const emailRegex = /^[a-zA-Z0-9._%+-]+@twilio\.com$/;
+
 const register = async (req, res) => {
   const { username, email, password } = req.body;
 
-  console.log("User===", req.body)
+  // Check if the email is in a valid format
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ error: "Invalid email address. Email must end with @twilio.com" });
+  }
+
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({
@@ -15,9 +21,9 @@ const register = async (req, res) => {
       password: hashedPassword,
     });
     await newUser.save();
-    res.status(201).json({msg: "User Registered Successfully"})
+    res.status(201).json({ msg: "User Registered Successfully" });
   } catch (error) {
-    res.status({error: "Registration Failed"})
+    res.status(500).json({ error: "Registration Failed" });
   }
 };
 
