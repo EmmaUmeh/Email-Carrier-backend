@@ -5,6 +5,7 @@ require('dotenv').config();
 // Import routes
 // const emailRoutes = require('./src/routes/emailRoutes');
 const userRoutes = require('./src/routes/user.routes'); // Add auth routes
+const createEmailRoutes = require('./src/routes/user.routes'); // Add auth routes
 const { connectToDatabase } = require('./src/config/database');
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -13,6 +14,7 @@ app.use(bodyParser.json());
 // Define routes
 // app.use('/emails', emailRoutes);
 app.use('/auth', userRoutes); // Use authentication routes
+app.use('/create', createEmailRoutes); // Use authentication routes
 
 // Default route
 
